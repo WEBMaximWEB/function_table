@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace function_table
 {
@@ -107,6 +108,21 @@ namespace function_table
             RunSheet(list_x, list_y);
 
             Console.ReadKey();
+        }
+
+        static void ReadFlile()
+        {
+            string line = "";
+            int counter = 0;
+
+            StreamReader f = new StreamReader(
+                                      @"C:\\input.txt");
+            while (line == "" && counter < 20)
+            {
+                line += f.ReadLine();
+                counter++;
+            }
+            f.Close();
         }
     }
 }
