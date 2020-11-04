@@ -7,66 +7,39 @@ namespace function_table
     {
         static void Main(string[] args)
         {
-            float steps, xmin, xmax, x, y;
-            var list_x = new List<string>();
-            var list_y = new List<string>();
-
-            // ввод данных
-            steps = Check("шаг построения");
-            xmin = Check("минимальное значение x");
-            xmax = Check("максимальное значение x");
-
-            for (x = xmin; x < xmax; x += steps)
-            {
-                //Здесь указать функцию:
-                y = x * x - 4 * x + 4;
-
-                string xstr = x.ToString();
-                list_x.Add(xstr);
-                string ystr = y.ToString();
-                list_y.Add(ystr);
-            }
-            // таблица
-            Cycle("╔", "═", "╤", "╗", Max_len(list_y, list_x));
-            Cycle("║y", " ", "│x", "║", Max_len(list_y, list_x) - 1);
-            Cycle("╚", "═", "╪", "╝", Max_len(list_y, list_x));
-            Sheet(list_y, list_x, Max_len(list_y, list_x));
-            Cycle("└", "─", "┴", "┘", Max_len(list_y, list_x));
-
-            Console.ReadKey();
+            RunMethods();
         }
 
-        static void Sheet(List<string> y, List<string> x, int maximum_length)
+        static void CreatSheet(List<string> y, List<string> x, int maxLength)
         {
             int len_list = x.Count;
-
             //body
             for (int i = 0; i < len_list; i++)
             {
                 Console.Write("│" + y[i]);
-                for (int k = 0; k <= maximum_length - y[i].Length; k++)
+                for (int k = 0; k <= maxLength - y[i].Length; k++)
                     Console.Write(" ");
 
                 Console.Write("│");
                 Console.Write(x[i]);
-                for (int j = 0; j <= maximum_length - x[i].Length; j++)
+                for (int j = 0; j <= maxLength - x[i].Length; j++)
                     Console.Write(" ");
                 Console.WriteLine("│");
             }
         }
 
-        static int Max_len(List<string> y, List<string> x)
+        static int SearchMaxLength(List<string> y, List<string> x)
         {
-            int maxl = 0, len_list = x.Count;
+            int maxLength = 0, len_list = x.Count;
 
             for (int i = 0; i < len_list; i++)
             {
-                if (x[i].Length > maxl)
-                    maxl = x[i].Length;
-                if (y[i].Length > maxl)
-                    maxl = y[i].Length;
+                if (x[i].Length > maxLength)
+                    maxLength = x[i].Length;
+                if (y[i].Length > maxLength)
+                    maxLength = y[i].Length;
             }
-            return maxl;
+            return maxLength;
         }
 
         static float Check(string text)
@@ -83,16 +56,57 @@ namespace function_table
             return b;
         }
 
-        static void Cycle(string start, string line, string center, string end, int max_l)
+        static void Cycle(string start, string line, string center, string end, int maxLength)
         {
             Console.Write(start);
-            for (int i = 0; i <= max_l * 2 + 1; i++)
+            for (int i = 0; i <= maxLength * 2 + 1; i++)
             {
                 Console.Write(line);
-                if (i == max_l)
+                if (i == maxLength)
                     Console.Write(center);
             }
             Console.WriteLine(end);
+        }
+
+        static void RunSheet(List<string> list_x, List<string> list_y)
+        {
+            Cycle("╔", "═", "╤", "╗", SearchMaxLength(list_y, list_x));
+            Cycle("║y", " ", "│x", "║", SearchMaxLength(list_y, list_x) - 1);
+            Cycle("╚", "═", "╪", "╝", SearchMaxLength(list_y, list_x));
+            CreatSheet(list_y, list_x, SearchMaxLength(list_y, list_x));
+            Cycle("└", "─", "┴", "┘", SearchMaxLength(list_y, list_x));
+        }
+
+        static float InputValues(string outputText)
+        {
+            float value;
+            value = Check(outputText);
+            return value;
+        }
+
+        static void RunMethods()
+        {
+            float steps, xMin, xMax, x, y;
+            var list_x = new List<string>();
+            var list_y = new List<string>();
+
+            steps = InputValues("шаг функции");
+            xMin = InputValues("минимальное значение");
+            xMax = InputValues("минимальное значение");
+
+            for (x = xMin; x < xMax; x += steps)
+            {
+                //Здесь указать функцию:
+                y = x * x - 4 * x + 4;
+
+                string xstr = x.ToString();
+                list_x.Add(xstr);
+                string ystr = y.ToString();
+                list_y.Add(ystr);
+            }
+            RunSheet(list_x, list_y);
+
+            Console.ReadKey();
         }
     }
 }
