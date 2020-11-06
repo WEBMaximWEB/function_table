@@ -12,16 +12,14 @@ namespace function_table
     {
         static void Main(string[] args)
         {
-            WriteInFile(RunMethods());
+        WriteInFile(RunMethods());   
         }
 
-        static string CreatSheet(List<string> y, List<string> x, int maxLength)
+        static string CreatSheet(List<string> y, List<string> x, int maxLength, int i)
         {
             string str = "";
             int len_list = x.Count;
             //body
-            for (int i = 0; i < len_list; i++)
-            {
                 str += "│" + y[i];
                 for (int k = 0; k <= maxLength - y[i].Length; k++)
                     str += " ";
@@ -30,7 +28,6 @@ namespace function_table
                 for (int j = 0; j <= maxLength - x[i].Length; j++)
                     str += " ";
                 str += "│";
-            }
             return str;
         }
 
@@ -82,7 +79,9 @@ namespace function_table
             sheet.Add(Cycle("╔", "═", "╤", "╗", SearchMaxLength(list_y, list_x)));
             sheet.Add(Cycle("║y", " ", "│x", "║", SearchMaxLength(list_y, list_x) - 1));
             sheet.Add(Cycle("╚", "═", "╪", "╝", SearchMaxLength(list_y, list_x)));
-            sheet.Add(CreatSheet(list_y, list_x, SearchMaxLength(list_y, list_x)));
+            for (int i = 0; i < list_x.Count; i++)
+                sheet.Add(CreatSheet(list_y, list_x, SearchMaxLength(list_y, list_x), i));
+
             sheet.Add(Cycle("└", "─", "┴", "┘", SearchMaxLength(list_y, list_x)));
             return sheet;
         }
@@ -147,14 +146,14 @@ namespace function_table
             string writePath = @"C:/Users/pmaxq/OneDrive/Desktop/output.txt";
             using (StreamWriter sw = new StreamWriter(writePath, false, System.Text.Encoding.Default))
             {
-                    sw.WriteLine("hello");
+                for(int i = 0; i < sheet.Count; i++)
+                    sw.WriteLine(sheet[i]);
             }
             //var path = System.IO.Path.GetFullPath(@"OneDrive\Desktop");
             //StreamWriter sw = new StreamWriter(path, true);
             //StreamWriter sw = new StreamWriter("C:/Users/pmaxq/OneDrive/Desktop/output.txt", true);
             //for (int i = 0; i < sheet.Count; i++)
              //   sw.WriteLine(sheet[i]);
-            //sw.Close();
         }
     }
 }
