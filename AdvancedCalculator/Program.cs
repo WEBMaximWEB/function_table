@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+//using System.Globalization;
+//using System.Runtime.CompilerServices;
+using System.Threading.Channels;
+using System.Globalization;
 
 namespace function_table
 {
@@ -8,25 +12,26 @@ namespace function_table
     {
         static void Main(string[] args)
         {
-            RunMethods();
+            WriteInFile(RunMethods());
         }
 
-        static void CreatSheet(List<string> y, List<string> x, int maxLength)
+        static string CreatSheet(List<string> y, List<string> x, int maxLength)
         {
+            string str = "";
             int len_list = x.Count;
             //body
             for (int i = 0; i < len_list; i++)
             {
-                Console.Write("│" + y[i]);
+                str += "│" + y[i];
                 for (int k = 0; k <= maxLength - y[i].Length; k++)
-                    Console.Write(" ");
+                    str += " ";
 
-                Console.Write("│");
-                Console.Write(x[i]);
+                str += "│" + x[i];
                 for (int j = 0; j <= maxLength - x[i].Length; j++)
-                    Console.Write(" ");
-                Console.WriteLine("│");
+                    str += " ";
+                str += "│";
             }
+            return str;
         }
 
         static int SearchMaxLength(List<string> y, List<string> x)
@@ -57,25 +62,29 @@ namespace function_table
             return b;
         }
 
-        static void Cycle(string start, string line, string center, string end, int maxLength)
+        static string Cycle(string start, string line, string center, string end, int maxLength)
         {
-            Console.Write(start);
+            string str = "";
+            str += start;
             for (int i = 0; i <= maxLength * 2 + 1; i++)
             {
-                Console.Write(line);
+                str += line;
                 if (i == maxLength)
-                    Console.Write(center);
+                    str += center;
             }
-            Console.WriteLine(end);
+            str += end;
+            return str;
         }
 
-        static void RunSheet(List<string> list_x, List<string> list_y)
+        static List<string> RunSheet(List<string> list_x, List<string> list_y)
         {
-            Cycle("╔", "═", "╤", "╗", SearchMaxLength(list_y, list_x));
-            Cycle("║y", " ", "│x", "║", SearchMaxLength(list_y, list_x) - 1);
-            Cycle("╚", "═", "╪", "╝", SearchMaxLength(list_y, list_x));
-            CreatSheet(list_y, list_x, SearchMaxLength(list_y, list_x));
-            Cycle("└", "─", "┴", "┘", SearchMaxLength(list_y, list_x));
+            List<string> sheet = new List<string>();
+            sheet.Add(Cycle("╔", "═", "╤", "╗", SearchMaxLength(list_y, list_x)));
+            sheet.Add(Cycle("║y", " ", "│x", "║", SearchMaxLength(list_y, list_x) - 1));
+            sheet.Add(Cycle("╚", "═", "╪", "╝", SearchMaxLength(list_y, list_x)));
+            sheet.Add(CreatSheet(list_y, list_x, SearchMaxLength(list_y, list_x)));
+            sheet.Add(Cycle("└", "─", "┴", "┘", SearchMaxLength(list_y, list_x)));
+            return sheet;
         }
 
         static float InputValues(string outputText)
@@ -85,7 +94,7 @@ namespace function_table
             return value;
         }
 
-        static void RunMethods()
+        static List<string> RunMethods()
         {
             float steps, xMin, xMax, x, y;
             var list_x = new List<string>();
@@ -105,24 +114,47 @@ namespace function_table
                 string ystr = y.ToString();
                 list_y.Add(ystr);
             }
-            RunSheet(list_x, list_y);
-
-            Console.ReadKey();
+            return RunSheet(list_x, list_y);
         }
 
-        static void ReadFlile()
+        static void ParseText(string line)
         {
+            //List<char> nums = for(int i = 0; i < 10; i++) nums.Add((char)i);
+            //List<char> signs = new List<char>{'+', '-', '*', '/', ')', '('}
+            //foreach(char i in line)
+        }
+
+        static string ReadFlile()
+        {
+            string fullPath = Path.GetFullPath("input.txt");
             string line = "";
             int counter = 0;
 
-            StreamReader f = new StreamReader(
-                                      @"C:\\input.txt");
+            StreamReader f = new StreamReader(fullPath);
             while (line == "" && counter < 20)
             {
                 line += f.ReadLine();
                 counter++;
             }
             f.Close();
+            
+            line = line.Replace(" ", "");
+            return line;
+        }
+
+        static void WriteInFile(List<string> sheet)
+        {
+            string writePath = @"C:/Users/pmaxq/OneDrive/Desktop/output.txt";
+            using (StreamWriter sw = new StreamWriter(writePath, false, System.Text.Encoding.Default))
+            {
+                    sw.WriteLine("hello");
+            }
+            //var path = System.IO.Path.GetFullPath(@"OneDrive\Desktop");
+            //StreamWriter sw = new StreamWriter(path, true);
+            //StreamWriter sw = new StreamWriter("C:/Users/pmaxq/OneDrive/Desktop/output.txt", true);
+            //for (int i = 0; i < sheet.Count; i++)
+             //   sw.WriteLine(sheet[i]);
+            //sw.Close();
         }
     }
 }
