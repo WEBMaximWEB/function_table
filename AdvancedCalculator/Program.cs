@@ -1,15 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-<<<<<<< HEAD
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-=======
 using System.IO;
 //using System.Globalization;
 //using System.Runtime.CompilerServices;
-using System.Threading.Channels;
-using System.Globalization;
->>>>>>> task2-file
+
 
 namespace function_table
 {
@@ -17,18 +12,12 @@ namespace function_table
     {
         static void Main(string[] args)
         {
-<<<<<<< HEAD
-            //RunMethods();
-            Console.WriteLine(calculate(ParseExpression("(6+10-4)/(1+1*2)+1")));
-=======
-        WriteInFile(RunMethods());   
->>>>>>> task2-file
+        WriteInFile(RunMethods());
         }
 
         static string CreatSheet(List<string> y, List<string> x, int maxLength, int i)
         {
             string str = "";
-            int len_list = x.Count;
             //body
                 str += "│" + y[i];
                 for (int k = 0; k <= maxLength - y[i].Length; k++)
@@ -91,7 +80,6 @@ namespace function_table
             sheet.Add(Cycle("╚", "═", "╪", "╝", SearchMaxLength(list_y, list_x)));
             for (int i = 0; i < list_x.Count; i++)
                 sheet.Add(CreatSheet(list_y, list_x, SearchMaxLength(list_y, list_x), i));
-
             sheet.Add(Cycle("└", "─", "┴", "┘", SearchMaxLength(list_y, list_x)));
             return sheet;
         }
@@ -105,7 +93,7 @@ namespace function_table
 
         static List<string> RunMethods()
         {
-            float steps, xMin, xMax, x, y;
+            double steps, xMin, xMax, x, y;
             var list_x = new List<string>();
             var list_y = new List<string>();
 
@@ -116,7 +104,8 @@ namespace function_table
             for (x = xMin; x < xMax; x += steps)
             {
                 //Здесь указать функцию:
-                y = x * x - 4 * x + 4;
+                string str = ParseExpression(ParseText(ReadFlile(), (int)x));
+                y = calculate(str);
 
                 string xstr = x.ToString();
                 list_x.Add(xstr);
@@ -126,27 +115,27 @@ namespace function_table
             return RunSheet(list_x, list_y);
         }
 
-        static void ParseText(string line)
+        static string ParseText(string line, int x)
         {
-            
+            line = line.Replace(" ", "");
+            line = line.Replace("y=", "");
+            line = line.Replace("x", x.ToString());
+            return line;
         }
 
         static string ReadFlile()
         {
-            string fullPath = Path.GetFullPath("input.txt");
+            //string fullPath = Path.GetFullPath(@"input.txt");
             string line = "";
             int counter = 0;
 
-            StreamReader f = new StreamReader(fullPath);
+            StreamReader f = new StreamReader(@"intput.txt");
             while (line == "" && counter < 20)
             {
                 line += f.ReadLine();
                 counter++;
             }
             f.Close();
-            
-            line = line.Replace(" ", "");
-            line = line.Replace("y=", "");
             return line;
         }
 
