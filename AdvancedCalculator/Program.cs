@@ -10,7 +10,7 @@ namespace function_table
         static void Main(string[] args)
         {
             //RunMethods();
-            Console.WriteLine(ParseExpression("(6+10-4)/(1+1*2)+1"));
+            Console.WriteLine(calculate(ParseExpression("(6+10-4)/(1+1*2)+1")));
         }
 
         static void CreatSheet(List<string> y, List<string> x, int maxLength)
@@ -114,7 +114,6 @@ namespace function_table
 
         static string ParseExpression(string line)
         {
-            Console.WriteLine("*");
             string str = "";
             List<char> stack = new List<char>();
 
@@ -129,12 +128,10 @@ namespace function_table
                     }
                         if (SearchPriority(line[i]) == 1)
                     {
-                        Console.WriteLine("*" + stack[stack.Count - 1]);
                         while (stack[stack.Count - 1] != '(')
                         {
                             str += stack[stack.Count - 1];
                             stack.RemoveAt(stack.Count - 1);
-                            Console.WriteLine("*");
                         }
                         stack.RemoveAt(stack.Count - 1);
                         continue;
@@ -150,14 +147,19 @@ namespace function_table
                 }
                 else if (Char.IsDigit(line[i]))
                 {
+                    string s = "";
                     while (Char.IsDigit(line[i]))
                     {
-                        str += line[i];
+                        s += line[i];
                         i++;
                         if (line.Length <= i)
+                        {
                             break;
+                        }
+
                     }
                     i--;
+                    str += s + " ";
                 }
                 else
                     continue;
@@ -167,7 +169,6 @@ namespace function_table
                 str += stack[stack.Count - 1];
                 stack.RemoveAt(stack.Count - 1);
             }
-            Console.WriteLine("str= " + str);
             return str;
         }
 
@@ -201,6 +202,42 @@ namespace function_table
                 return 1;
             else
                 return SearchPriority(stack[stack.Count - 1]);
+        }
+
+        static double calculate(string str)
+        {
+            List<double> result = new List<double>();
+            
+            for(int i = 0; i < str.Length; i++)
+            {
+                if (Char.IsDigit(str[i]))
+                {
+                    string num = "";
+                    while(Char.IsDigit(str[i]))
+                    {
+                        num += str[i];
+                        i++;
+                    }
+                    result.Add(Convert.ToDouble(num));
+                }
+                else if(IsSign(str[i]))
+                {
+                    double num1 = result[result.Count - 1];
+                    result.RemoveAt(result.Count - 1);
+                    double num2 = result[result.Count - 1];
+                    result.RemoveAt(result.Count - 1);
+
+                    switch (str[i])
+                    {
+                        case '+': result.Add(num1 + num2); break;
+                        case '-': result.Add(num2 - num1); break;
+                        case '*': result.Add(num1 * num2); break;
+                        case '/': result.Add(num2 / num1); break;
+                        case '^': result.Add(Math.Pow(num2, num1)); break;
+                    }
+                }
+            }
+            return result[0];
         }
     }
 }
