@@ -143,7 +143,7 @@ namespace function_table
 
         static void WriteInFile(List<string> sheet)
         {
-            string writePath = @"C:/Users/pmaxq/OneDrive/Desktop/output.txt";
+            string writePath = System.IO.Path.GetFullPath("output.txt"); ;
             using (StreamWriter sw = new StreamWriter(writePath, false, System.Text.Encoding.Default))
             {
                 for(int i = 0; i < sheet.Count; i++)
