@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
-//using System.Globalization;
-//using System.Runtime.CompilerServices;
-
 
 namespace function_table
 {
@@ -18,7 +15,7 @@ namespace function_table
         static string CreatSheet(List<string> y, List<string> x, int maxLength, int i)
         {
             string str = "";
-            //body
+            //создаем тело таблицы
                 str += "│" + y[i];
                 for (int k = 0; k <= maxLength - y[i].Length; k++)
                     str += " ";
@@ -34,6 +31,7 @@ namespace function_table
         {
             int maxLength = 0, len_list = x.Count;
 
+            //поиск максимальной длины значения
             for (int i = 0; i < len_list; i++)
             {
                 if (x[i].Length > maxLength)
@@ -46,6 +44,7 @@ namespace function_table
 
         static float Check(string text)
         {
+            //проверка введенных значений
             string a;
             float b;
             Console.Write("Укажите " + text + ":");
@@ -60,6 +59,7 @@ namespace function_table
 
         static string Cycle(string start, string line, string center, string end, int maxLength)
         {
+            //шапка таблицы
             string str = "";
             str += start;
             for (int i = 0; i <= maxLength * 2 + 1; i++)
@@ -72,6 +72,7 @@ namespace function_table
             return str;
         }
 
+        //построчно записываем таблицу в список
         static List<string> RunSheet(List<string> list_x, List<string> list_y)
         {
             List<string> sheet = new List<string>();
@@ -84,26 +85,19 @@ namespace function_table
             return sheet;
         }
 
-        static float InputValues(string outputText)
-        {
-            float value;
-            value = Check(outputText);
-            return value;
-        }
-
+        //работа с методами
         static List<string> RunMethods()
         {
             double steps, xMin, xMax, x, y;
             var list_x = new List<string>();
             var list_y = new List<string>();
 
-            steps = InputValues("шаг функции");
-            xMin = InputValues("минимальное значение");
-            xMax = InputValues("минимальное значение");
+            steps = Check("шаг функции");
+            xMin = Check("минимальное значение");
+            xMax = Check("минимальное значение");
 
             for (x = xMin; x < xMax; x += steps)
             {
-                //Здесь указать функцию:
                 string str = ParseExpression(ParseText(ReadFlile(), (int)x));
                 y = calculate(str);
 
@@ -125,7 +119,6 @@ namespace function_table
 
         static string ReadFlile()
         {
-            //string fullPath = Path.GetFullPath(@"input.txt");
             string line = "";
             int counter = 0;
 
