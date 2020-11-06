@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace function_table
 {
@@ -107,6 +108,68 @@ namespace function_table
             RunSheet(list_x, list_y);
 
             Console.ReadKey();
+        }
+
+        static void ParseExpression(string line)
+        {
+            string str = "";
+            List<string> stack = new List<string>();
+
+            for(int i = 0; i < line.Length; i++)
+            {
+                if (IsSign(line[i]))
+                {
+                    if()
+                }
+                else if (IsNumber(line[i]))
+                {
+                    string s = "";
+                    while (!IsNumber(line[i]))
+                    {
+                        str += line[i];
+                        i++;
+                    }
+                    //stack.Add(s);
+                    i--;
+                }
+                else
+                    continue;
+            }
+        }
+
+        static bool IsSign(char x)
+        {
+            Char[] signs = { '+', '-', '*', '^', '/', '(', ')' };
+            if (signs.Contains(x))
+                return true;
+            else
+                return false;
+        }
+
+        static bool IsNumber(char x)
+        {
+            List<char> num = new List<char>();
+            for(int i = 0; i < 10; i++) num.Add(Convert.ToChar(i));
+            if (num.Contains(x))
+                return true;
+            else
+                return false;
+
+        }
+
+        static int SearchPriority(char x)
+        {
+            switch(x)
+            {
+                case '(': return 0;
+                case ')': return 1;
+                case '+': return 2;
+                case '-': return 3;
+                case '*': return 4;
+                case '/': return 4;
+                case '^': return 5;
+                default: return 10;
+            }
         }
     }
 }
