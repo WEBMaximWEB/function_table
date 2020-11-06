@@ -118,9 +118,7 @@ namespace function_table
 
         static void ParseText(string line)
         {
-            //List<char> nums = for(int i = 0; i < 10; i++) nums.Add((char)i);
-            //List<char> signs = new List<char>{'+', '-', '*', '/', ')', '('}
-            //foreach(char i in line)
+            
         }
 
         static string ReadFlile()
@@ -138,22 +136,18 @@ namespace function_table
             f.Close();
             
             line = line.Replace(" ", "");
+            line = line.Replace("y=", "");
             return line;
         }
 
         static void WriteInFile(List<string> sheet)
         {
-            string writePath = System.IO.Path.GetFullPath("output.txt"); ;
+            string writePath = Path.GetFullPath("output.txt"); ;
             using (StreamWriter sw = new StreamWriter(writePath, false, System.Text.Encoding.Default))
             {
                 for(int i = 0; i < sheet.Count; i++)
                     sw.WriteLine(sheet[i]);
             }
-            //var path = System.IO.Path.GetFullPath(@"OneDrive\Desktop");
-            //StreamWriter sw = new StreamWriter(path, true);
-            //StreamWriter sw = new StreamWriter("C:/Users/pmaxq/OneDrive/Desktop/output.txt", true);
-            //for (int i = 0; i < sheet.Count; i++)
-             //   sw.WriteLine(sheet[i]);
         }
     }
 }
