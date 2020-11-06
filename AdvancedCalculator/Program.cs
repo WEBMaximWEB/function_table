@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 
 namespace function_table
 {
@@ -7,7 +9,8 @@ namespace function_table
     {
         static void Main(string[] args)
         {
-            RunMethods();
+            //RunMethods();
+            Console.WriteLine(calculate(ParseExpression("(6+10-4)/(1+1*2)+1")));
         }
 
         static void CreatSheet(List<string> y, List<string> x, int maxLength)
@@ -107,6 +110,134 @@ namespace function_table
             RunSheet(list_x, list_y);
 
             Console.ReadKey();
+        }
+
+        static string ParseExpression(string line)
+        {
+            string str = "";
+            List<char> stack = new List<char>();
+
+            for(int i = 0; i < line.Length; i++)
+            {
+                if (IsSign(line[i]))
+                {
+                    if (SearchPriority(line[i]) == 0)
+                    {
+                        stack.Add(line[i]);
+                        continue;
+                    }
+                        if (SearchPriority(line[i]) == 1)
+                    {
+                        while (stack[stack.Count - 1] != '(')
+                        {
+                            str += stack[stack.Count - 1];
+                            stack.RemoveAt(stack.Count - 1);
+                        }
+                        stack.RemoveAt(stack.Count - 1);
+                        continue;
+                    }
+                    if (SearchPriority(line[i]) <= StackPriority(stack) && stack.Count > 0)
+                    {
+                        str += stack[stack.Count - 1];
+                        stack.RemoveAt(stack.Count - 1);
+                    }
+
+                    if (SearchPriority(line[i]) > StackPriority(stack))
+                        stack.Add(line[i]);
+                }
+                else if (Char.IsDigit(line[i]))
+                {
+                    string s = "";
+                    while (Char.IsDigit(line[i]))
+                    {
+                        s += line[i];
+                        i++;
+                        if (line.Length <= i)
+                        {
+                            break;
+                        }
+
+                    }
+                    i--;
+                    str += s + " ";
+                }
+                else
+                    continue;
+            }
+            while(stack.Count != 0)
+            {
+                str += stack[stack.Count - 1];
+                stack.RemoveAt(stack.Count - 1);
+            }
+            return str;
+        }
+
+        static bool IsSign(char x)
+        {
+            Char[] signs = { '+', '-', '*', '^', '/', '(', ')' };
+            if (signs.Contains(x))
+                return true;
+            else
+                return false;
+        }
+
+        static int SearchPriority(char x)
+        {
+            switch(x)
+            {
+                case '(': return 0;
+                case ')': return 1;
+                case '+': return 2;
+                case '-': return 2;
+                case '*': return 4;
+                case '/': return 4;
+                case '^': return 5;
+                default: return 10;
+            }
+        }
+
+        static int StackPriority(List<char> stack)
+        {
+            if (stack.Count == 0)
+                return 1;
+            else
+                return SearchPriority(stack[stack.Count - 1]);
+        }
+
+        static double calculate(string str)
+        {
+            List<double> result = new List<double>();
+            
+            for(int i = 0; i < str.Length; i++)
+            {
+                if (Char.IsDigit(str[i]))
+                {
+                    string num = "";
+                    while(Char.IsDigit(str[i]))
+                    {
+                        num += str[i];
+                        i++;
+                    }
+                    result.Add(Convert.ToDouble(num));
+                }
+                else if(IsSign(str[i]))
+                {
+                    double num1 = result[result.Count - 1];
+                    result.RemoveAt(result.Count - 1);
+                    double num2 = result[result.Count - 1];
+                    result.RemoveAt(result.Count - 1);
+
+                    switch (str[i])
+                    {
+                        case '+': result.Add(num1 + num2); break;
+                        case '-': result.Add(num2 - num1); break;
+                        case '*': result.Add(num1 * num2); break;
+                        case '/': result.Add(num2 / num1); break;
+                        case '^': result.Add(Math.Pow(num2, num1)); break;
+                    }
+                }
+            }
+            return result[0];
         }
     }
 }
