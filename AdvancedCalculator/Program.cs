@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 
 namespace function_table
 {
@@ -8,7 +9,8 @@ namespace function_table
     {
         static void Main(string[] args)
         {
-            RunMethods();
+            //RunMethods();
+            Console.WriteLine(ParseExpression("(6+10-4)/(1+1*2)+1"));
         }
 
         static void CreatSheet(List<string> y, List<string> x, int maxLength)
@@ -110,31 +112,63 @@ namespace function_table
             Console.ReadKey();
         }
 
-        static void ParseExpression(string line)
+        static string ParseExpression(string line)
         {
+            Console.WriteLine("*");
             string str = "";
-            List<string> stack = new List<string>();
+            List<char> stack = new List<char>();
 
             for(int i = 0; i < line.Length; i++)
             {
                 if (IsSign(line[i]))
                 {
-                    if()
+                    if (SearchPriority(line[i]) == 0)
+                    {
+                        stack.Add(line[i]);
+                        continue;
+                    }
+                        if (SearchPriority(line[i]) == 1)
+                    {
+                        Console.WriteLine("*" + stack[stack.Count - 1]);
+                        while (stack[stack.Count - 1] != '(')
+                        {
+                            str += stack[stack.Count - 1];
+                            stack.RemoveAt(stack.Count - 1);
+                            Console.WriteLine("*");
+                        }
+                        stack.RemoveAt(stack.Count - 1);
+                        continue;
+                    }
+                    if (SearchPriority(line[i]) <= StackPriority(stack) && stack.Count > 0)
+                    {
+                        str += stack[stack.Count - 1];
+                        stack.RemoveAt(stack.Count - 1);
+                    }
+
+                    if (SearchPriority(line[i]) > StackPriority(stack))
+                        stack.Add(line[i]);
                 }
-                else if (IsNumber(line[i]))
+                else if (Char.IsDigit(line[i]))
                 {
-                    string s = "";
-                    while (!IsNumber(line[i]))
+                    while (Char.IsDigit(line[i]))
                     {
                         str += line[i];
                         i++;
+                        if (line.Length <= i)
+                            break;
                     }
-                    //stack.Add(s);
                     i--;
                 }
                 else
                     continue;
             }
+            while(stack.Count != 0)
+            {
+                str += stack[stack.Count - 1];
+                stack.RemoveAt(stack.Count - 1);
+            }
+            Console.WriteLine("str= " + str);
+            return str;
         }
 
         static bool IsSign(char x)
@@ -146,17 +180,6 @@ namespace function_table
                 return false;
         }
 
-        static bool IsNumber(char x)
-        {
-            List<char> num = new List<char>();
-            for(int i = 0; i < 10; i++) num.Add(Convert.ToChar(i));
-            if (num.Contains(x))
-                return true;
-            else
-                return false;
-
-        }
-
         static int SearchPriority(char x)
         {
             switch(x)
@@ -164,12 +187,20 @@ namespace function_table
                 case '(': return 0;
                 case ')': return 1;
                 case '+': return 2;
-                case '-': return 3;
+                case '-': return 2;
                 case '*': return 4;
                 case '/': return 4;
                 case '^': return 5;
                 default: return 10;
             }
+        }
+
+        static int StackPriority(List<char> stack)
+        {
+            if (stack.Count == 0)
+                return 1;
+            else
+                return SearchPriority(stack[stack.Count - 1]);
         }
     }
 }
