@@ -9,7 +9,13 @@ namespace function_table
     {
         static void Main(string[] args)
         {
-        WriteInFile(RunMethods());
+            double steps, xMin, xMax;
+            steps = Check("шаг функции");
+            xMin = Check("минимальное значение");
+            xMax = Check("минимальное значение");
+
+            CaculateFunction(steps, xMin, xMax, out List<string> listX, out List<string> listY);
+            WriteSheet(listX, listY);
         }
 
         static string CreatSheet(List<string> y, List<string> x, int maxLength, int i)
@@ -65,48 +71,24 @@ namespace function_table
             for (int i = 0; i <= maxLength * 2 + 1; i++)
             {
                 str += line;
-                if (i == maxLength)
-                    str += center;
+                if (i == maxLength) str += center;
             }
             str += end;
             return str;
         }
 
         //построчно записываем таблицу в список
-        static List<string> RunSheet(List<string> list_x, List<string> list_y)
+        static List<string> WriteSheet(List<string> list_x, List<string> list_y)
         {
             List<string> sheet = new List<string>();
-            sheet.Add(Cycle("╔", "═", "╤", "╗", SearchMaxLength(list_y, list_x)));
-            sheet.Add(Cycle("║y", " ", "│x", "║", SearchMaxLength(list_y, list_x) - 1));
-            sheet.Add(Cycle("╚", "═", "╪", "╝", SearchMaxLength(list_y, list_x)));
+            int maxLength = SearchMaxLength(list_y, list_x);
+            sheet.Add(Cycle("╔", "═", "╤", "╗", maxLength));
+            sheet.Add(Cycle("║y", " ", "│x", "║", maxLength - 1));
+            sheet.Add(Cycle("╚", "═", "╪", "╝", maxLength));
             for (int i = 0; i < list_x.Count; i++)
-                sheet.Add(CreatSheet(list_y, list_x, SearchMaxLength(list_y, list_x), i));
-            sheet.Add(Cycle("└", "─", "┴", "┘", SearchMaxLength(list_y, list_x)));
+                sheet.Add(CreatSheet(list_y, list_x, maxLength, i));
+            sheet.Add(Cycle("└", "─", "┴", "┘", maxLength));
             return sheet;
-        }
-
-        //работа с методами
-        static List<string> RunMethods()
-        {
-            double steps, xMin, xMax, x, y;
-            var list_x = new List<string>();
-            var list_y = new List<string>();
-
-            steps = Check("шаг функции");
-            xMin = Check("минимальное значение");
-            xMax = Check("минимальное значение");
-
-            for (x = xMin; x < xMax; x += steps)
-            {
-                string str = ParseExpression(ParseText(ReadFlile(), (int)x));
-                y = calculate(str);
-
-                string xstr = x.ToString();
-                list_x.Add(xstr);
-                string ystr = y.ToString();
-                list_y.Add(ystr);
-            }
-            return RunSheet(list_x, list_y);
         }
 
         static string ParseText(string line, int x)
@@ -160,7 +142,7 @@ namespace function_table
                     {
                         while (stack[stack.Count - 1] != '(')
                         {
-                            str += stack[stack.Count - 1];
+                            str += stack[^1];
                             stack.RemoveAt(stack.Count - 1);
                         }
                         stack.RemoveAt(stack.Count - 1);
@@ -168,7 +150,7 @@ namespace function_table
                     }
                     if (SearchPriority(line[i]) <= StackPriority(stack) && stack.Count > 0)
                     {
-                        str += stack[stack.Count - 1];
+                        str += stack[^1];
                         stack.RemoveAt(stack.Count - 1);
                     }
 
@@ -196,7 +178,7 @@ namespace function_table
             }
             while(stack.Count != 0)
             {
-                str += stack[stack.Count - 1];
+                str += stack[^1];
                 stack.RemoveAt(stack.Count - 1);
             }
             return str;
@@ -231,10 +213,10 @@ namespace function_table
             if (stack.Count == 0)
                 return 1;
             else
-                return SearchPriority(stack[stack.Count - 1]);
+                return SearchPriority(stack[^1]);
         }
 
-        static double calculate(string str)
+        static double Calculate(string str)
         {
             List<double> result = new List<double>();
             
@@ -252,7 +234,7 @@ namespace function_table
                 }
                 else if(IsSign(str[i]))
                 {
-                    double num1 = result[result.Count - 1];
+                    double num1 = result[^1];
                     result.RemoveAt(result.Count - 1);
                     double num2 = result[result.Count - 1];
                     result.RemoveAt(result.Count - 1);
@@ -268,6 +250,24 @@ namespace function_table
                 }
             }
             return result[0];
+        }
+
+        static void CaculateFunction(double steps, double xMin, double xMax,
+                                    out List<string> listX, out List<string> listY)
+        {
+            double xValue, yValue;
+            listX = new List<string>();
+            listY = new List<string>();
+            for (xValue = xMin; xValue < xMax; xValue += steps)
+            {
+                string str = ParseExpression(ParseText(ReadFlile(), (int)xValue));
+                yValue = Calculate(str);
+
+                string xstr = xValue.ToString();
+                listX.Add(xstr);
+                string ystr = yValue.ToString();
+                listY.Add(ystr);
+            }
         }
     }
 }
