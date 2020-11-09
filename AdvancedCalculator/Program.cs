@@ -51,16 +51,16 @@ namespace function_table
         static float Check(string text)
         {
             //проверка введенных значений
-            string a;
-            float b;
+            string input;
+            float output;
             Console.Write("Укажите " + text + ":");
-            a = Console.ReadLine();
-            while (!float.TryParse(a, out b))
+            input = Console.ReadLine();
+            while (!float.TryParse(input, out output))
             {
                 Console.Write("Вы допустили ошибку! Введите значение повторно:");
-                a = Console.ReadLine();
+                input = Console.ReadLine();
             }
-            return b;
+            return output;
         }
 
         static string Cycle(string start, string line, string center, string end, int maxLength)
@@ -164,11 +164,8 @@ namespace function_table
                     {
                         s += line[i];
                         i++;
-                        if (line.Length <= i)
-                        {
+                        if (line.Length <= i) 
                             break;
-                        }
-
                     }
                     i--;
                     str += s + " ";
