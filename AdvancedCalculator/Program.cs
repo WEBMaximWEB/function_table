@@ -14,7 +14,8 @@ namespace function_table
             xMin = Check("минимальное значение");
             xMax = Check("минимальное значение");
 
-            CaculateFunction(steps, xMin, xMax, out List<string> listX, out List<string> listY);
+            string str = ParseExpression(ParseText(ReadFlile()));
+            CaculateFunction(steps, xMin, xMax, str, out List<string> listX, out List<string> listY);
             WriteSheet(listX, listY);
         }
 
@@ -91,11 +92,10 @@ namespace function_table
             return sheet;
         }
 
-        static string ParseText(string line, int x)
+        static string ParseText(string line)
         {
             line = line.Replace(" ", "");
             line = line.Replace("y=", "");
-            line = line.Replace("x", x.ToString());
             return line;
         }
 
@@ -131,6 +131,8 @@ namespace function_table
 
             for(int i = 0; i < line.Length; i++)
             {
+                if (line[i] == 'x')
+                    str += "x";
                 if (IsSign(line[i]))
                 {
                     if (SearchPriority(line[i]) == 0)
@@ -178,6 +180,7 @@ namespace function_table
                 str += stack[^1];
                 stack.RemoveAt(stack.Count - 1);
             }
+            Console.WriteLine(str);
             return str;
         }
 
@@ -249,7 +252,7 @@ namespace function_table
             return result[0];
         }
 
-        static void CaculateFunction(double steps, double xMin, double xMax,
+        static void CaculateFunction(double steps, double xMin, double xMax, string str,
                                     out List<string> listX, out List<string> listY)
         {
             double xValue, yValue;
@@ -257,7 +260,7 @@ namespace function_table
             listY = new List<string>();
             for (xValue = xMin; xValue < xMax; xValue += steps)
             {
-                string str = ParseExpression(ParseText(ReadFlile(), (int)xValue));
+                str = str.Replace("x", xValue.ToString());
                 yValue = Calculate(str);
 
                 string xstr = xValue.ToString();
