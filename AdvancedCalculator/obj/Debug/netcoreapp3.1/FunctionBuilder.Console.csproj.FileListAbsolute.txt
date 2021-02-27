@@ -1,0 +1,16 @@
+C:\Users\pmaxq\source\repos\FunctionBuilder\FunctionBuilder.Console\AdvancedCalculator\bin\Debug\netcoreapp3.1\FunctionBuilder.Console.exe
+C:\Users\pmaxq\source\repos\FunctionBuilder\FunctionBuilder.Console\AdvancedCalculator\bin\Debug\netcoreapp3.1\FunctionBuilder.Console.deps.json
+C:\Users\pmaxq\source\repos\FunctionBuilder\FunctionBuilder.Console\AdvancedCalculator\bin\Debug\netcoreapp3.1\FunctionBuilder.Console.runtimeconfig.json
+C:\Users\pmaxq\source\repos\FunctionBuilder\FunctionBuilder.Console\AdvancedCalculator\bin\Debug\netcoreapp3.1\FunctionBuilder.Console.runtimeconfig.dev.json
+C:\Users\pmaxq\source\repos\FunctionBuilder\FunctionBuilder.Console\AdvancedCalculator\bin\Debug\netcoreapp3.1\FunctionBuilder.Console.dll
+C:\Users\pmaxq\source\repos\FunctionBuilder\FunctionBuilder.Console\AdvancedCalculator\bin\Debug\netcoreapp3.1\FunctionBuilder.Console.pdb
+C:\Users\pmaxq\source\repos\FunctionBuilder\FunctionBuilder.Console\AdvancedCalculator\obj\Debug\netcoreapp3.1\FunctionBuilder.Console.csprojAssemblyReference.cache
+C:\Users\pmaxq\source\repos\FunctionBuilder\FunctionBuilder.Console\AdvancedCalculator\obj\Debug\netcoreapp3.1\FunctionBuilder.Console.AssemblyInfoInputs.cache
+C:\Users\pmaxq\source\repos\FunctionBuilder\FunctionBuilder.Console\AdvancedCalculator\obj\Debug\netcoreapp3.1\FunctionBuilder.Console.AssemblyInfo.cs
+C:\Users\pmaxq\source\repos\FunctionBuilder\FunctionBuilder.Console\AdvancedCalculator\obj\Debug\netcoreapp3.1\FunctionBuilder.Console.csproj.CoreCompileInputs.cache
+C:\Users\pmaxq\source\repos\FunctionBuilder\FunctionBuilder.Console\AdvancedCalculator\obj\Debug\netcoreapp3.1\FunctionBuilder.Console.dll
+C:\Users\pmaxq\source\repos\FunctionBuilder\FunctionBuilder.Console\AdvancedCalculator\obj\Debug\netcoreapp3.1\FunctionBuilder.Console.pdb
+C:\Users\pmaxq\source\repos\FunctionBuilder\FunctionBuilder.Console\AdvancedCalculator\obj\Debug\netcoreapp3.1\FunctionBuilder.Console.genruntimeconfig.cache
+C:\Users\pmaxq\source\repos\FunctionBuilder\FunctionBuilder.Console\AdvancedCalculator\bin\Debug\netcoreapp3.1\FunctionBuilder.Logic.dll
+C:\Users\pmaxq\source\repos\FunctionBuilder\FunctionBuilder.Console\AdvancedCalculator\bin\Debug\netcoreapp3.1\FunctionBuilder.Logic.pdb
+C:\Users\pmaxq\source\repos\FunctionBuilder\FunctionBuilder.Console\AdvancedCalculator\obj\Debug\netcoreapp3.1\FunctionBuilder.Console.csproj.CopyComplete
